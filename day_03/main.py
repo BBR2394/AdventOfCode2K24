@@ -115,13 +115,15 @@ def my_parser():
                             res += first_num*second_num
                             print("on arrete pour le moment, first_num :", first_num, "second num: ", second_num, "  res temp ", first_num*second_num, " Res final inter : ", res)
                             counter_of_mul += 1
-                            #time.sleep(0.4)
-
+                            print("cursor a la fin ", cur)
+                            #return True
+                            #time.sleep(1)
                 else : 
                     print("pas de parenthese")
-            print("cursor a la fin ", cur)
-            #return True
             
+        
+            #return True
+        
     print("nombre de mul : ", counter_of_mul)
     print("resultat final : ", res)
     return True
