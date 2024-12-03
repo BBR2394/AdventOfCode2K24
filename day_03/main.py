@@ -85,45 +85,47 @@ def get_n_check_secondNum(cur, step, num): # step max is 3
         return get_n_check_secondNum(my_queue.popleft(), step+1, num*10 + tmp)
 
 
-def my_parser(cur):
+def my_parser():
     global my_queue 
     global res
-    print("cursor au debut : ", cur, end=':')
+    
     first_num = 0
     second_num = 0
-    if cur == "m":
-        if check_mul(cur):
-            print("il y a mul : cur : ", cur)
-            cur = my_queue.popleft()
-            if check_parenthesis(cur):
+    while len(my_queue) > 0:
+        cur = my_queue.popleft()
+        print("cursor au debut : ", cur, end=':')
+        if cur == "m":
+            if check_mul(cur):
+                print("il y a mul : cur : ", cur)
                 cur = my_queue.popleft()
-                print("detection de parenthese ok : cur : ", cur)
-                first_num = get_n_check_firstnum(cur, 1, first_num)
-                print("first_num : ", first_num)
-                cur = my_queue.popleft()
-                print("cur : ", cur)
-                if first_num != None:
-                    second_num = get_n_check_secondNum(cur, 1, second_num)
-                    print("second_num : ", second_num)
-                    if second_num != None:
-                        res += first_num*second_num
-                        print("on arrete pour le moment, first_num :", first_num, "second num: ", second_num, "  res temp ", first_num*second_num, " Res final inter : ", res)
-                    else : 
-                        print("second num is None")
-            else : 
-                print("pas de parenthese")
-        print("cursor a la fin ", cur)
-        #return True
-    if len(my_queue) == 0:
-        print("resultat final : ", res)
-        return True
-    my_parser(my_queue.popleft())
+                if check_parenthesis(cur):
+                    cur = my_queue.popleft()
+                    print("detection de parenthese ok : cur : ", cur)
+                    first_num = get_n_check_firstnum(cur, 1, first_num)
+                    print("first_num : ", first_num)
+                    cur = my_queue.popleft()
+                    print("cur : ", cur)
+                    if first_num != None:
+                        second_num = get_n_check_secondNum(cur, 1, second_num)
+                        print("second_num : ", second_num)
+                        if second_num != None:
+                            res += first_num*second_num
+                            print("on arrete pour le moment, first_num :", first_num, "second num: ", second_num, "  res temp ", first_num*second_num, " Res final inter : ", res)
+                        else : 
+                            print("second num is None")
+                else : 
+                    print("pas de parenthese")
+            print("cursor a la fin ", cur)
+            #return True
+            
+    print("resultat final : ", res)
+    return True
     
 
 def lexer_parser(data):
     global my_queue 
     my_queue = deque(data)
-    my_parser(my_queue.popleft())
+    my_parser()
     # cur = my_queue.popleft()
     # while cur:
     #     print(cur, end='')
