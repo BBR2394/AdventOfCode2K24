@@ -15,6 +15,19 @@ def readFile(filename):
 
     return lst
 
+
+def createMatrice(filename):
+    lines = readFile(filename)
+    matrice = []
+    for i in lines:
+        one_line = []
+        for e in i:
+            one_line.append(e)
+        matrice.append(one_line)
+
+    return matrice
+              
+
 def main(av):
     print("TEST My lib : readfile")
     print(av)
