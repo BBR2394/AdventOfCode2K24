@@ -59,16 +59,28 @@ def check_bottom(mat, curY, curX, pos_char_to_check):
     except IndexError:
         return False
     
-def check_diagonal(mat, curY, curX, pos_char_to_check, dir_x, dir_y):
-    #print("Diagonal : dirX", dir_x, " dirY = ", dir_y)
+def check_diagonal(mat, curY, curX, pos_char_to_check, dir_x, dir_y, debug=False):
+
+    if debug:
+        print("Diagonal : dirX", dir_x, " dirY = ", dir_y)
+        print("(x;y) =(",  curX,";", curY,") (", mat[curY][curX],").")
     global str_to_find 
+
 
     if len(str_to_find)-1 < pos_char_to_check:
         return True
+    
+    #when we are in a double dimaension array we can use -1 to access some data in Python ...
+    if curY < 0 :
+        return False
+    elif curX < 0:
+        return False
+    
     try :
-        #print("check Diag : on verifie line[pos_char_to_check] = ", mat[curY][curX], " str_to_find[pos_char_to_check] =  ", str_to_find[pos_char_to_check])
+        if debug:
+            print("check Diag : on verifie line[pos_char_to_check] = ", mat[curY][curX], " str_to_find[pos_char_to_check] =  ", str_to_find[pos_char_to_check])
         if mat[curY][curX] == str_to_find[pos_char_to_check]:
-            return check_diagonal(mat, curY+dir_y, curX+dir_x, pos_char_to_check+1, dir_x, dir_y)
+            return check_diagonal(mat, curY+dir_y, curX+dir_x, pos_char_to_check+1, dir_x, dir_y, debug)
         return False
     except IndexError:
         return False
@@ -95,8 +107,8 @@ def pass_through_matrice(mat):
     print("DAY04:Matrix Size (x;y) = (", size_X,";", size_Y,").")
 
     while cur_y < size_Y:
-        #print("ligne : ", cur_y)
-        #print(mat[cur_y])
+        # print("ligne : ", cur_y)
+        # print(mat[cur_y])
         while cur_x < size_X:
             if check_X(mat[cur_y][cur_x]):
                 count_X += 1
@@ -113,7 +125,7 @@ def pass_through_matrice(mat):
                 diag_ne = check_diagonal(mat, cur_y-1, cur_x+1, 0, 1, -1)
                 diag_nw = check_diagonal(mat, cur_y-1, cur_x-1, 0, -1, -1)
                 diag_se = check_diagonal(mat, cur_y+1, cur_x+1, 0, 1, 1)
-                diag_sw = check_diagonal(mat, cur_y+1, cur_x-1, 0, 1, -1)
+                diag_sw = check_diagonal(mat, cur_y+1, cur_x-1, 0, -1, 1)
 
                 if right_check:
                     count_right_xmas += 1
@@ -126,6 +138,7 @@ def pass_through_matrice(mat):
                 if diag_ne:
                     count_diag_ne += 1
                 if diag_nw:
+                    #print("a la ligne : ", cur_y, " y a un nord ouest")
                     count_diag_nw += 1
                 if diag_se:
                     count_diag_se += 1
