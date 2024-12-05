@@ -2,7 +2,7 @@
 
 import sys
 
-def readFile(filename):
+def readFile(filename, split_char='\n'):
     fd = None
     print("filename : ", filename)
     if filename:
@@ -11,7 +11,7 @@ def readFile(filename):
        fd = open ("./data.txt", 'r')
 
     input = fd.read()
-    lst = input.split('\n')
+    lst = input.split(split_char)
 
     return lst
 
