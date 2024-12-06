@@ -6,7 +6,8 @@ sys.path.append("../day_02")
 import my_readFile 
 
 number_of_moov = 0
-list_dir = ['North', 'East', 'West', 'South']
+list_dir = ['North', 'East', 'South','West']
+debug = False
 
 direction_object  = { 
     "North": {
@@ -56,11 +57,11 @@ def can_moove_next(mat, curDir, curPos):
     next_x = curPos['x'] + direction_object[curDir]['x']
     next_y = curPos['y'] + direction_object[curDir]['y']
 
-    if next_x < -1:
+    if next_x < 0:
         return False
     elif next_x >= len(mat[0]):
         return False
-    elif next_y < -1:
+    elif next_y < 0:
         return False
     elif next_y >= len(mat):
         return False
@@ -73,35 +74,55 @@ def next_pos(mat, curDir, curPos):
 
     return mat[next_y][next_x]
 
-def display_plate(mat):
-    for i in mat:
-        print(i)
+def display_plate(mat, display_anyway=False):
+    if debug == True or display_anyway:
+        for i in mat:
+            print(i)
 
 def go(mat, curDir, curPos):
     # on se deplace
 
-    if can_moove_next(mat, curDir, curPos):
-        nxt = next_pos(mat, curDir, curPos)
-        if nxt == "#":
-            print("on s'errete pour le moment")
+    while can_moove_next(mat, curDir, curPos):
+        # print("cur dir : ", curDir, " cur pos : ", curPos)
+        try:
+            nxt = next_pos(mat, curDir, curPos)
+        except:
+            print("ERREUR : ")
+            display_plate(mat, True)
             print(curPos)
-            mat[curPos['y']][curPos['x']] = '>'
-            tmp_nxtdir = 0
-            if list_dir.index('North')+1 > len(list_dir):
-                tmp_nxtdir = 0
+            print(curDir)
+            print(can_moove_next(mat, curDir, curPos))
+            exit
+
+        if nxt == "#":
+            # print("on s'errete pour le moment")
+            # print(curPos)
+            if curDir == 'North':
+                mat[curPos['y']][curPos['x']] = '>'
+            elif curDir == 'South':
+                mat[curPos['y']][curPos['x']] = 'V'
+            if list_dir.index(curDir)+1 >= len(list_dir):
+                curDir = list_dir[0]
             else :
-                curDir = list_dir[list_dir.index('North')+1]
-            display_plate(mat)
-            go(mat, curDir, curPos)
+                curDir = list_dir[list_dir.index(curDir)+1]
+            # print("new dir : ", curDir)
+            # display_plate(mat)
+            #go(mat, curDir, curPos)
         else :
             mat[curPos['y']][curPos['x']] = 'X'
             curPos['x'] = curPos['x'] + direction_object[curDir]['x']
             curPos['y'] = curPos['y'] + direction_object[curDir]['y']
             mat[curPos['y']][curPos['x']] = '^'
-            return go(mat, curDir, curPos)
-    else:
-        return mat
+            #return go(mat, curDir, curPos)
+    mat[curPos['y']][curPos['x']] = 'X'
+    return mat
 
+
+def count_X(mat):
+    count = 0
+    for i in mat:
+        count += i.count('X')
+    return count
 
 def to_guard(mat):
     currentDir = "North"
@@ -111,16 +132,15 @@ def to_guard(mat):
     print(curPos)
 
     mat = go(mat, currentDir, curPos)
-    for i in mat:
-        print(i)
 
+    print(count_X(mat))
 
 
 def main(av):
     print("Day - 06")
     board = my_readFile.createMatrice(av[1])
 
-    display_plate(board)
+    #display_plate(board)
 
     to_guard(board)
 
