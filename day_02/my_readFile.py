@@ -15,7 +15,8 @@ def readFile(filename, split_char='\n'):
 
     return lst
 
-
+# create matrice from a list
+# we parse each line char by char
 def createMatrice(filename):
     lines = readFile(filename)
     matrice = []
