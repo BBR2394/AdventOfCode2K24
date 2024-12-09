@@ -95,9 +95,9 @@ def my_parser():
     second_num = 0
     while len(my_queue) > 0:
         cur = my_queue.popleft()
-        print("cur:", cur, end=';')
+        #print("cur:", cur, end=';')
         if cur == "m":
-            print("")
+            #print("")
             if check_mul(cur):
                 #print("il y a mul : cur : ", cur)
                 cur = my_queue.popleft()
@@ -115,11 +115,11 @@ def my_parser():
                             res += first_num*second_num
                             print("on arrete pour le moment, first_num :", first_num, "second num: ", second_num, "  res temp ", first_num*second_num, " Res final inter : ", res)
                             counter_of_mul += 1
-                            print("cursor a la fin ", cur)
+                            #print("cursor a la fin ", cur)
                             #return True
-                            #time.sleep(1)
-                else : 
-                    print("pas de parenthese")
+                            time.sleep(1)
+                # else : 
+                #     print("pas de parenthese")
             
         
             #return True
