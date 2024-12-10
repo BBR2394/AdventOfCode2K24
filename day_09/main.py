@@ -34,7 +34,7 @@ def create_first_line(line):
     print(new_line)
     return new_line
 
-def get_index_last_int(line):
+def get_index_last_contigous_int(line):
     i = 0
     index_last_int = 0
     while i < len(line):
@@ -69,24 +69,70 @@ def create_others_line(previousLine, level=0):
     #previousLine[previousLine.index('.')] = last_char
     return previousLine
 
+def create_other_lines_list(previousLine, level=0):
+    length = len(previousLine)
+    first_point = previousLine.index('.')
+    last_int = get_index_last_contigous_int(previousLine)
+    # print("create other lines list")
+    # print(first_point)
+    # print(last_int)
+    previousLine[first_point] = previousLine[last_int]
+    
+    previousLine[last_int] = '.'
+
+    return previousLine
 
 def compute_line(line):
     print("la ligne a ordonner")
     print(line)
     lst = []
     firstLine = create_first_line(line)
-    lst.append(firstLine)
+
+
+    fisrt_line_lst = []
+    for i in firstLine:
+        fisrt_line_lst.append(i)
+    
 
     print("first ligne ")
-    print(firstLine)
+    print(len(fisrt_line_lst))
+    # print(fisrt_line_lst)
     otherLine = firstLine
     first_point = firstLine.index('.')
-    last_int = get_index_last_int(firstLine)
+    last_int = get_index_last_contigous_int(firstLine)
 
-    # if first_point < last_int:
-    #     otherLine = create_others_line(firstLine)
-    #     print("nouvelle ligne")
-    #     print(otherLine)
+    line_to_copute = fisrt_line_lst
+    lst.append(fisrt_line_lst)
+    print("on rentre dans le while")
+    log_int = 0
+    while first_point < last_int:
+        otherLine = create_other_lines_list(line_to_copute)
+        lst.append(otherLine)
+        # print("nouvelle ligne")
+        # print(otherLine)
+        # print(first_point)
+        # print(last_int)
+        # print(len(lst))
+        if log_int % 100 == 0:
+            print("log int du while : ", str(log_int))
+        log_int += 1
+        line_to_copute = lst[len(lst)-1]
+        first_point = line_to_copute.index('.')
+        last_int = get_index_last_contigous_int(line_to_copute)
+
+    print("end")
+    # print(line_to_copute)
+
+    final_res = 0
+    i = 0
+    while i < len(line_to_copute):
+        if line_to_copute[i] == '.':
+            break
+        final_res += i* int(line_to_copute[i])
+
+        i += 1
+
+    print("resultat finale : ", str(final_res))
 
 def main(av):
     print("Day - 09")
