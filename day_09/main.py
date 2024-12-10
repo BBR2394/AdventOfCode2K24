@@ -5,6 +5,11 @@ import sys
 sys.path.append("../day_02")
 import my_readFile 
 
+
+pos_last_x = 0
+first_point = 0
+last_int = 0
+
 def add_char(char, occur):
     i = 0
     res = ""
@@ -43,6 +48,27 @@ def get_index_last_contigous_int(line):
         i += 1
     return index_last_int
 
+def get_last_int_end_str(line):
+    i = len(line) - 1
+    index_last_int = len(line) - 1
+    while i > 0:
+        if line[i] != '.':
+            index_last_int = i
+            return index_last_int
+        i -= 1
+
+line_to_compute_cpy = []
+
+def get_last_int_end_str_pop(line):
+    global line_to_compute_cpy
+    if len(line_to_compute_cpy) == 0:
+        line_to_compute_cpy = line
+
+    poped = ''
+    while poped != '.':
+        poped = line_to_compute_cpy.pop()
+    return poped
+
 # warning : numToInsert must be a 'char' (a string)
 def replace_first_point(line, numToInsert):
     i = 0
@@ -70,14 +96,34 @@ def create_others_line(previousLine, level=0):
     return previousLine
 
 def create_other_lines_list(previousLine, level=0):
+    global first_point
+    global last_int
     length = len(previousLine)
     first_point = previousLine.index('.')
-    last_int = get_index_last_contigous_int(previousLine)
+    last_int = get_last_int_end_str(previousLine)
     # print("create other lines list")
     # print(first_point)
     # print(last_int)
-    previousLine[first_point] = previousLine[last_int]
-    
+    previousLine[first_point] = previousLine[last_int]    
+    previousLine[last_int] = '.'
+
+    return previousLine
+
+def create_other_lines_list_optimised(previousLine, level=0):
+    global pos_last_x
+    length = len(previousLine)
+    first_point = previousLine[pos_last_x:].index('.')
+
+    # V1.5 we reach the index of the last int
+    last_int = get_last_int_end_str(previousLine)
+
+    #V2 : we reach the char
+    #last_int = ---
+
+    # print("create other lines list")
+    # print(first_point)
+    # print(last_int)
+    previousLine[first_point+pos_last_x] = previousLine[last_int]    
     previousLine[last_int] = '.'
 
     return previousLine
@@ -97,28 +143,36 @@ def compute_line(line):
     print("first ligne ")
     print(len(fisrt_line_lst))
     # print(fisrt_line_lst)
+
+    global first_point
+    global last_int
     otherLine = firstLine
     first_point = firstLine.index('.')
-    last_int = get_index_last_contigous_int(firstLine)
+    last_int = get_last_int_end_str(firstLine)
 
     line_to_copute = fisrt_line_lst
     lst.append(fisrt_line_lst)
     print("on rentre dans le while")
+    print("lpos dernier int ", last_int)
     log_int = 0
     while first_point < last_int:
-        otherLine = create_other_lines_list(line_to_copute)
-        lst.append(otherLine)
+        otherLine = create_other_lines_list_optimised(line_to_copute)
+        # Do we need to store all previous lines ? i think not ..
+        #lst.append(otherLine)
+
         # print("nouvelle ligne")
         # print(otherLine)
         # print(first_point)
-        # print(last_int)
+        # print("lpos dernier int ", last_int)
         # print(len(lst))
-        if log_int % 100 == 0:
+        if log_int % 1000 == 0:
             print("log int du while : ", str(log_int))
         log_int += 1
-        line_to_copute = lst[len(lst)-1]
-        first_point = line_to_copute.index('.')
-        last_int = get_index_last_contigous_int(line_to_copute)
+        #line_to_copute = lst[len(lst)-1]
+        line_to_copute = otherLine
+        # we get these var inside the previous function : create_other_lines_list_optimised()
+        first_point = line_to_copute[pos_last_x:].index('.')
+        last_int = get_last_int_end_str(line_to_copute)
 
     print("end")
     # print(line_to_copute)
