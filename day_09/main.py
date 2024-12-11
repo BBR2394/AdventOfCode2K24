@@ -123,6 +123,7 @@ def create_other_lines_list_optimised(previousLine, level=0):
     # print("create other lines list")
     # print(first_point)
     # print(last_int)
+    
     previousLine[first_point+pos_last_x] = previousLine[last_int]    
     previousLine[last_int] = '.'
 
