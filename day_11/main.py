@@ -32,6 +32,15 @@ def check_sub_element(lst):
     return new_lst
 
 
+def return_number_sub_element(lst):
+    count = 0
+    for i in lst:
+        count += compute_elem(i)
+
+    #print(new_lst)
+
+    return new_lst
+
 def main(av):
     print("Day - 11")
 
@@ -40,10 +49,18 @@ def main(av):
     lst = file[0].split(' ')
     for i in lst:
         print(i)
+    main_lst = []
+    for i in lst:
+        main_lst.append(i)
 
     blink = 25
+    
     while blink > 0:
+
         lst = check_sub_element(lst)
+        if blink%5==0:
+            print("blink = ", blink)
+            print(len(lst))
         blink -= 1
 
     print(lst)
