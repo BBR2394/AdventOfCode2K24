@@ -4,6 +4,7 @@ import sys
 from collections import deque
 
 import time
+import re
 
 my_queue = deque()
 res = 0
@@ -117,7 +118,7 @@ def my_parser():
                             counter_of_mul += 1
                             #print("cursor a la fin ", cur)
                             #return True
-                            time.sleep(1)
+                            #time.sleep(0.1)
                 # else : 
                 #     print("pas de parenthese")
             
@@ -146,12 +147,29 @@ def lexer_parser(data):
 
 
 
+def regex_computation(input):
+    allMul = re.findall('mul\(\d+,\d+\)', input)
+    print("il y a combien de mul")
+    print(len(allMul))
+
+    finalRes = 0
+    for i in allMul:
+        temp = i[4:-1]
+        temp_tab = temp.split(',')
+        res = int(temp_tab[0]) * int(temp_tab[1])
+        finalRes += res
+        print("on arrete pour le moment, first_num :", temp_tab[0], "second num: ", temp_tab[1], "  res temp ", res, " Res final inter : ", finalRes)
+
+
+
 def main(av):
     print("Hello - day_03")
     print(av)
         
     input = read_file(av[1])
-    lexer_parser(input)
+    #lexer_parser(input)
+
+    regex_computation(input)
 
 
     
